@@ -1,0 +1,60 @@
+% !TEX program = lualatex
+% Turon/Tufte-inspired PhD dissertation template
+% Compact preview: latexmk -lualatex main.tex
+% Final book rhythm: latexmk -lualatex main-final.tex
+
+% Keep the layout oneside in both modes so the Tufte text column and
+% right-margin notes never mirror. Final mode only changes page rhythm.
+\newif\iffinaldissertation
+\ifdefined\TURONFINAL
+  \finaldissertationtrue
+\else
+  \finaldissertationfalse
+\fi
+\iffinaldissertation
+  \documentclass[11pt,oneside,openright]{book}
+\else
+  \documentclass[11pt,oneside,openany]{book}
+\fi
+
+\input{metadata}
+\input{preamble}
+
+\begin{document}
+\frontmatter
+
+\input{frontmatter/titlepage}
+\input{frontmatter/colophon}
+\input{frontmatter/approval-page}
+\input{frontmatter/abstract}
+\input{frontmatter/epigraph}
+\input{frontmatter/acknowledgments}
+
+\cleardoublepage
+{\begin{tocwide}\hyphenpenalty=10000\exhyphenpenalty=10000\emergencystretch=4em\tableofcontents\end{tocwide}}
+\cleardoublepage
+{\begin{tocwide}\hyphenpenalty=10000\exhyphenpenalty=10000\emergencystretch=4em\listoffigures\end{tocwide}}
+\cleardoublepage
+{\begin{tocwide}\hyphenpenalty=10000\exhyphenpenalty=10000\emergencystretch=4em\listoftables\end{tocwide}}
+
+\mainmatter
+
+\part{Prologue}
+\input{chapters/01-overview}
+
+\part{Research Contributions}
+\input{chapters/02-background}
+\input{chapters/03-study-one}
+\input{chapters/04-study-two}
+
+\part{Epilogue}
+\input{chapters/05-conclusion}
+
+\appendix
+\part{Technical Appendix}
+\input{backmatter/appendix-a}
+
+\backmatter
+\printbibliography[heading=bibintoc,title={References}]
+
+\end{document}

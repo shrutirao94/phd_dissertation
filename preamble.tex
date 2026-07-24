@@ -1,0 +1,479 @@
+% ---------- Typography ----------
+\usepackage{iftex}
+\ifluatex
+  \usepackage{fontspec}
+  \defaultfontfeatures{Ligatures=TeX,Renderer=Harfbuzz}
+
+  % Turon used Minion Pro as both text and display face.  Keep headings,
+  % chapter numbers, titles, and body text on the same serif family.
+  % Free fallback order is deliberately conservative and book-like:
+  % Source Serif 4 -> Libertinus Serif -> EB Garamond -> TeX Gyre Pagella.
+  \IfFontExistsTF{Minion Pro}{%
+    \setmainfont{Minion Pro}[
+      Numbers=OldStyle,
+      Ligatures=TeX
+    ]%
+  }{%
+    \IfFontExistsTF{Adobe Source Serif 4}{%
+      \setmainfont{Adobe Source Serif 4}[
+        Numbers=OldStyle,
+        Ligatures=TeX,
+        Scale=1.00
+      ]%
+    }{%
+      \IfFontExistsTF{Source Serif 4}{%
+        \setmainfont{Source Serif 4}[
+          Numbers=OldStyle,
+          Ligatures=TeX,
+          Scale=1.00
+        ]%
+      }{%
+        \IfFontExistsTF{Libertinus Serif}{%
+          \setmainfont{Libertinus Serif}[
+            Numbers=OldStyle,
+            Ligatures=TeX,
+            Scale=1.00
+          ]%
+        }{%
+          \IfFontExistsTF{EB Garamond 12}{%
+            \setmainfont{EB Garamond 12}[
+              Numbers=OldStyle,
+              Ligatures=TeX,
+              Scale=0.95
+            ]%
+          }{%
+            \IfFontExistsTF{EB Garamond}{%
+              \setmainfont{EB Garamond}[
+                Numbers=OldStyle,
+                Ligatures=TeX,
+                Scale=0.95
+              ]%
+            }{%
+              \IfFontExistsTF{TeX Gyre Pagella}{%
+                \setmainfont{TeX Gyre Pagella}[
+                  Numbers=OldStyle,
+                  Ligatures=TeX,
+                  Scale=0.99
+                ]%
+              }{%
+                \setmainfont{lmroman10-regular.otf}[
+                  BoldFont=lmroman10-bold.otf,
+                  ItalicFont=lmroman10-italic.otf,
+                  BoldItalicFont=lmroman10-bolditalic.otf
+                ]%
+              }%
+            }%
+          }%
+        }%
+      }%
+    }%
+  }
+
+  \IfFontExistsTF{Myriad Pro}{%
+    \setsansfont{Myriad Pro}[Ligatures=TeX]
+  }{%
+    \IfFontExistsTF{Source Sans 3}{%
+      \setsansfont{Source Sans 3}[Ligatures=TeX]
+    }{%
+      \IfFontExistsTF{Source Sans Pro}{%
+        \setsansfont{Source Sans Pro}[Ligatures=TeX]
+      }{%
+        \IfFontExistsTF{TeX Gyre Heros}{%
+          \setsansfont{TeX Gyre Heros}[Ligatures=TeX,Scale=.94]
+        }{%
+          \setsansfont{lmsans10-regular.otf}[
+            BoldFont=lmsans10-bold.otf,
+            ItalicFont=lmsans10-oblique.otf,
+            BoldItalicFont=lmsans10-boldoblique.otf
+          ]%
+        }%
+      }%
+    }%
+  }
+
+  \IfFontExistsTF{Bera Mono}{%
+    \setmonofont{Bera Mono}[Scale=.88]
+  }{%
+    \IfFontExistsTF{Bitstream Vera Sans Mono}{%
+      \setmonofont{Bitstream Vera Sans Mono}[Scale=.88]
+    }{%
+      \IfFontExistsTF{Bitstream Vera Mono}{%
+        \setmonofont{Bitstream Vera Mono}[Scale=.88]
+      }{%
+        \IfFontExistsTF{DejaVu Sans Mono}{%
+          \setmonofont{DejaVu Sans Mono}[Scale=.86]
+        }{%
+          \IfFontExistsTF{Inconsolata}{%
+            \setmonofont{Inconsolata}[Scale=.92]
+          }{%
+            \setmonofont{lmmono10-regular.otf}[ItalicFont=lmmono10-italic.otf,Scale=.92]%
+          }%
+        }%
+      }%
+    }%
+  }
+
+  \IfFontExistsTF{DejaVu Sans}{\newfontfamily\turonsymbolfont{DejaVu Sans}[Scale=MatchLowercase]}{%
+    \IfFontExistsTF{Noto Sans Symbols 2}{\newfontfamily\turonsymbolfont{Noto Sans Symbols 2}[Scale=MatchLowercase]}{\newfontfamily\turonsymbolfont{Noto Sans}[Scale=MatchLowercase]}}
+\else
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{tgpagella}
+  \usepackage[scaled=.92]{tgheros}
+  \usepackage{beramono}
+  \usepackage{pifont}
+\fi
+
+% ---------- Page and text style ----------
+\usepackage[
+  a4paper,
+  left=25mm,
+  right=70mm,
+  top=30mm,
+  bottom=35mm,
+  marginparwidth=34mm,
+  marginparsep=9mm,
+  heightrounded
+]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{amsmath,amssymb}
+\usepackage{csquotes}
+\usepackage{lettrine}
+\usepackage{epigraph}
+\usepackage{titlesec}
+\usepackage{titletoc}
+\usepackage{tocloft}
+\usepackage{fancyhdr}
+\usepackage{fancyvrb}
+\usepackage{caption}
+\usepackage{marginnote}
+\usepackage{changepage}
+\usepackage{etoolbox}
+\usepackage{textcase}
+\usepackage{pdfpages}
+\usepackage{xparse}
+\usepackage{xspace}
+\usepackage{hyperref}
+
+% Front-matter lists can breathe slightly into the fixed right margin.
+% This does not mirror page geometry or affect the main text column.
+\newenvironment{tocwide}{%
+  \begin{adjustwidth}{0pt}{-14mm}%
+}{%
+  \end{adjustwidth}%
+}
+
+% Turon-like accent colours: muted blue for major structural titles;
+% restrained wine/magenta for page numbers, sidenote marks, links, and refs.
+\definecolor{turonblue}{HTML}{2F6F8F}
+\definecolor{turonmagenta}{HTML}{8B1E5A}
+\definecolor{turongray}{HTML}{555555}
+\definecolor{turonlightgray}{HTML}{777777}
+
+% Baseline-based spacing for the chapter-opening grid and heading hierarchy.
+% Turon-like refinement comes from a tight baseline rhythm, not large cm-scale gaps.
+\newlength{\chapterGapNumTitle}
+\newlength{\chapterGapTitleRule}
+\newlength{\chapterGapRuleOpening}
+\newlength{\sectionBefore}
+\newlength{\sectionAfter}
+\newlength{\subsectionBefore}
+\newlength{\subsectionAfter}
+\AtBeginDocument{%
+  \setlength{\chapterGapNumTitle}{0.6\baselineskip}%
+  \setlength{\chapterGapTitleRule}{0.4\baselineskip}%
+  \setlength{\chapterGapRuleOpening}{0.7\baselineskip}%
+  \setlength{\sectionBefore}{1.6\baselineskip}%
+  \setlength{\sectionAfter}{1.3\baselineskip}%
+  \setlength{\subsectionBefore}{1.35\baselineskip}%
+  \setlength{\subsectionAfter}{0.95\baselineskip}%
+}
+
+% Keep body text true black; reserve grey/colour only for intentional furniture.
+\AtBeginDocument{\color{black}}
+
+\hypersetup{
+  colorlinks=true,
+  linktoc=page,
+  linkcolor=turonmagenta,
+  citecolor=turonmagenta,
+  urlcolor=turonmagenta,
+  pdfauthor={\thesisauthor},
+  pdftitle={\thesistitle}
+}
+
+% Bibliography.
+\usepackage[backend=biber,style=authoryear,doi=false,isbn=false,url=true,maxcitenames=2,maxbibnames=99]{biblatex}
+\addbibresource{references.bib}
+
+% Slightly richer, darker book texture without making the page loose.
+\linespread{.96}
+\setlength{\parindent}{1em}
+\setlength{\parskip}{0pt}
+\setlength{\emergencystretch}{1.5em}
+
+% Blank verso/interstitial pages must be visually blank: no running heads,
+% footers, or standalone roman numerals. In compact preview mode this behaves
+% like \clearpage; in final dissertation mode it enforces recto openings while
+% keeping the fixed, non-mirrored Tufte text column.
+\makeatletter
+\@ifundefined{iffinaldissertation}{\newif\iffinaldissertation\finaldissertationfalse}{}
+\newif\ifturonstartedpages
+\AddToHook{shipout/after}{\global\turonstartedpagestrue}
+\renewcommand{\cleardoublepage}{%
+  \clearpage
+  \iffinaldissertation
+    % In oneside final mode, keep recto openings without changing geometry.
+    % The guard prevents a blank page before the title page at document start.
+    \ifturonstartedpages
+      \ifodd\c@page
+        \hbox{}%
+        \thispagestyle{empty}%
+        \newpage
+        \if@twocolumn\hbox{}\newpage\fi
+      \fi
+    \fi
+  \else
+    \if@twoside
+      \ifodd\c@page
+      \else
+        \hbox{}%
+        \thispagestyle{empty}%
+        \newpage
+        \if@twocolumn\hbox{}\newpage\fi
+      \fi
+    \fi
+  \fi}
+\makeatother
+
+% ---------- Heading hierarchy ----------
+
+% Use lining figures for large chapter numbers even when body text uses old-style figures.
+\newcommand{\turonchapnum}[1]{{\ifluatex\addfontfeatures{Numbers=Lining}\fi\bfseries #1}}
+% Chapter openings: large black number only, no word "Chapter".
+% Baseline grid: number--title = .6 baseline; title--rule = .4 baseline;
+% rule--opening paragraph = .7 baseline. The rule sits close under the title.
+\titleformat{\chapter}[display]
+  {\normalfont\raggedright}
+  {\color{black}\fontsize{76}{78}\selectfont\turonchapnum{\thechapter}}
+  {\chapterGapNumTitle}
+  {\normalfont\Large\itshape\color{black!76}}
+  [\vspace{\chapterGapTitleRule}\noindent\textcolor{black!24}{\rule{\textwidth}{0.3pt}}\vspace{\chapterGapRuleOpening}]
+\titlespacing*{\chapter}{0pt}{-22pt}{0pt}
+
+% Unnumbered front-matter chapters: quiet italic heading.
+\titleformat{name=\chapter,numberless}[display]
+  {\normalfont\raggedright}
+  {}
+  {0pt}
+  {\normalfont\Large\itshape\color{black!86}}
+\titlespacing*{name=\chapter,numberless}{0pt}{1.3em}{1.6em}
+
+% Section headings follow the same baseline rhythm as the chapter opening.
+% They are body-size navigation marks, differentiated by small caps, tracking,
+% and slightly stronger weight rather than by larger display scale.
+\titleformat{\section}
+  {\normalfont\normalsize\scshape\bfseries\lsstyle\raggedright\color{black}}
+  {\thesection}{0.75em}{}
+\titlespacing*{\section}{0pt}{\sectionBefore}{\sectionAfter}
+
+\titleformat{\subsection}
+  {\normalfont\normalsize\scshape\bfseries\lsstyle\raggedright\color{black}}
+  {\thesubsection}{0.7em}{}
+\titlespacing*{\subsection}{0pt}{\subsectionBefore}{\subsectionAfter}
+
+% Part pages: quiet "Part I" plus blue small-caps/all-caps title, centered mid-page.
+\newcommand{\turonparttitle}[1]{\textls[55]{\MakeTextUppercase{#1}}}
+\titleformat{\part}[display]
+  {\thispagestyle{empty}\normalfont\centering}
+  {\normalfont\small Part \Roman{part}}
+  {1.8em}
+  {\normalfont\Large\scshape\color{turonblue}\turonparttitle}
+\titlespacing*{\part}{0pt}{0.30\textheight}{0.38\textheight}
+
+% ---------- Front matter helper ----------
+\newcommand{\frontmatterheading}[1]{%
+  \chapter*{#1}%
+  \markboth{\MakeTextLowercase{#1}}{\MakeTextLowercase{#1}}%
+}
+
+% Paragraph opening marker, like Turon's compact triangular synopsis lead-in.
+% Use an explicit Unicode glyph with a known symbol font under LuaLaTeX so it cannot
+% degrade to an I, dot, or math fallback.
+\ifluatex
+  \DeclareRobustCommand{\synopsismarker}{{\turonsymbolfont\symbol{"25B8}}}
+\else
+  \DeclareRobustCommand{\synopsismarker}{\ding{228}}
+\fi
+\DeclareRobustCommand{\openingmark}{%
+  \noindent\llap{\raisebox{.01em}{\scriptsize\color{turonblue!55!black}\synopsismarker}\hspace{.7em}}\ignorespaces%
+}
+
+% A compact opening synopsis: marker + paragraph flow, not a labelled box.
+% It always begins below the chapter epigraph, rather than visually merging with it.
+\newenvironment{synopsis}{%
+  \par\addvspace{0pt}%
+  \begingroup\color{black}\openingmark\ignorespaces
+}{%
+  \par\endgroup\addvspace{0pt}%
+}
+
+% Turon-like opening paragraph: a small hanging marker plus a moderated small-caps lead phrase.
+\newcommand{\openingpara}[2]{%
+  \par\addvspace{0pt}%
+  \noindent\llap{\raisebox{.01em}{\scriptsize\color{turonblue!55!black}\synopsismarker}\hspace{.7em}}%
+  {\scshape\textls[4]{#1}} #2\par\addvspace{0pt}%
+}
+
+% ---------- Sidenotes and margin material ----------
+% Keep all notes in the fixed right margin. Do not mirror them on even pages.
+\setlength{\marginparpush}{9pt}
+\setlength{\marginparsep}{8.5mm}
+\setlength{\marginparwidth}{34mm}
+\renewcommand*{\marginfont}{\fontsize{6.25}{7.6}\selectfont\raggedright}
+\newcommand*{\epigraphmarginfont}{\fontsize{7.2}{8.6}\selectfont\raggedleft}
+\renewcommand*{\raggedleftmarginnote}{\raggedright}
+\renewcommand*{\raggedrightmarginnote}{\raggedright}
+\newcounter{sidenote}
+\newcommand{\turonnotemark}{\textsuperscript{\tiny\textcolor{turonmagenta!65!black}{\thesidenote}}}
+\newcommand{\turonmarginmark}{\textsuperscript{\tiny\textcolor{turonmagenta!65!black}{\thesidenote}}}
+\newcommand{\turonmarginnote}[1]{%
+  \normalmarginpar% right margin only in oneside layout
+  \marginpar{\marginfont\turonmarginmark\,\textcolor{black}{#1}}%
+}
+\newcommand{\sidenote}[1]{%
+  \refstepcounter{sidenote}%
+  \turonnotemark%
+  \turonmarginnote{#1}%
+}
+\newcommand{\sidenotedown}[2]{%
+  \refstepcounter{sidenote}%
+  \turonnotemark%
+  \marginnote{\marginfont\turonmarginmark\,\textcolor{black}{#2}}[#1]%
+}
+\newcommand{\marginterm}[2]{\textbf{#1}\marginpar{\marginfont\textbf{#1.} #2}}
+% Chapter epigraphs sit in the fixed right margin, aligned with the opening
+% paragraph/rule area rather than occupying the main text flow. Using marginpar
+% keeps subsequent sidenotes from colliding with the epigraph.
+\newcommand{\sidequote}[2]{%
+  \par\addvspace{0pt}%
+  \normalmarginpar%
+  \marginpar{\parbox[t]{\marginparwidth}{\epigraphmarginfont\setlength{\parindent}{0pt}\itshape ``#1''\par\vspace{.35em}{\normalfont\scriptsize\raggedleft---#2\par}}}%
+  \par\addvspace{0pt}%
+}
+\newcommand{\chapterepigraph}[2]{\sidequote{#1}{#2}}
+
+\newsavebox{\marginfigurebox}
+\newenvironment{marginfigure}{%
+  \begin{lrbox}{\marginfigurebox}\begin{minipage}{\marginparwidth}\marginfont\centering
+}{%
+  \end{minipage}\end{lrbox}\marginnote{\usebox{\marginfigurebox}}[0pt]%
+}
+
+\newenvironment{fullwidth}{%
+  \begin{adjustwidth}{0pt}{-55mm}
+}{%
+  \end{adjustwidth}
+}
+
+% Lists: compact, solid bullet, no report-like gaps.
+\setlist[itemize]{leftmargin=1.2em,itemsep=.15em,topsep=.35em,parsep=0pt,partopsep=0pt,label={\color{turonblue}$\bullet$}}
+\setlist[enumerate]{leftmargin=1.45em,itemsep=.15em,topsep=.35em,parsep=0pt,partopsep=0pt}
+
+% Captions and list entries: compact, book-like captions rather than default bold labels.
+% The label is distinguished quietly; the caption remains a prose note.
+\DeclareCaptionLabelSeparator{turoncaption}{.\enspace}
+\DeclareCaptionFormat{turoncaptionformat}{%
+  \footnotesize\hangindent=1.8em\hangafter=1 #1#2#3\par}
+\captionsetup{font={footnotesize},labelfont={sc,color=turonblue},textfont=normalfont,format=turoncaptionformat,justification=raggedright,singlelinecheck=false,labelsep=turoncaption,aboveskip=.55\baselineskip,belowskip=.25\baselineskip}
+\captionsetup[figure]{name=Figure}
+\captionsetup[table]{name=Table}
+
+% Code blocks.
+\fvset{fontsize=\small,frame=single,rulecolor=\color{black!15},framesep=3mm}
+
+% ---------- Contents and lists ----------
+\setcounter{tocdepth}{2}
+\renewcommand{\contentsname}{Contents}
+\renewcommand{\listfigurename}{Figures}
+\renewcommand{\listtablename}{Tables}
+
+\renewcommand{\cfttoctitlefont}{\normalfont\Large\itshape\color{black!86}}
+\renewcommand{\cftloftitlefont}{\normalfont\Large\itshape\color{black!86}}
+\renewcommand{\cftlottitlefont}{\normalfont\Large\itshape\color{black!86}}
+\renewcommand{\cftaftertoctitle}{\par\vspace{-.25em}\noindent\rule{\textwidth}{.35pt}\vspace{1.0em}}
+\renewcommand{\cftafterloftitle}{\par\vspace{-.25em}\noindent\rule{\textwidth}{.35pt}\vspace{1.0em}}
+\renewcommand{\cftafterlottitle}{\par\vspace{-.25em}\noindent\rule{\textwidth}{.35pt}\vspace{1.0em}}
+\setlength{\cftbeforetoctitleskip}{0pt}
+\setlength{\cftbeforeloftitleskip}{0pt}
+\setlength{\cftbeforelottitleskip}{0pt}
+\setlength{\cftaftertoctitleskip}{.55em}
+\setlength{\cftafterloftitleskip}{.5em}
+\setlength{\cftafterlottitleskip}{.5em}
+
+\newcommand{\tocnohyphen}{\hyphenpenalty=10000\exhyphenpenalty=10000\pretolerance=10000\tolerance=2200\emergencystretch=4.0em\relax}
+\renewcommand{\cftpartfont}{\tocnohyphen\normalfont\small\color{turonblue}\scshape}
+\renewcommand{\cftpartpagefont}{\normalfont\small\color{turonmagenta}}
+\renewcommand{\cftchapfont}{\tocnohyphen\normalfont\small}
+\renewcommand{\cftchappagefont}{\normalfont\small\color{turonmagenta}}
+\renewcommand{\cftsecfont}{\tocnohyphen\normalfont\small}
+\renewcommand{\cftsecpagefont}{\normalfont\small\color{turonmagenta}}
+\renewcommand{\cftsubsecfont}{\tocnohyphen\normalfont\footnotesize}
+\renewcommand{\cftsubsecpagefont}{\normalfont\footnotesize\color{turonmagenta}}
+% Slightly wider dot spacing keeps long entries from feeling mechanically ruled.
+\renewcommand{\cftdotsep}{12.0}
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}}
+\setlength{\cftbeforepartskip}{.95em}
+\setlength{\cftbeforechapskip}{.48em}
+\setlength{\cftbeforesecskip}{.16em}
+\setlength{\cftpartindent}{0pt}
+\setlength{\cftchapindent}{1.2em}
+\setlength{\cftsecindent}{3.0em}
+\setlength{\cftsubsecindent}{4.7em}
+
+% Figure/table lists: Turon-like prefix and magenta page numbers.
+\renewcommand{\cftfigpresnum}{Figure~}
+\renewcommand{\cfttabpresnum}{Table~}
+\setlength{\cftfignumwidth}{4.8em}
+\setlength{\cfttabnumwidth}{4.4em}
+\renewcommand{\cftfigfont}{\normalfont\small}
+\renewcommand{\cftfigpagefont}{\normalfont\small\color{turonmagenta}}
+\renewcommand{\cfttabfont}{\normalfont\small}
+\renewcommand{\cfttabpagefont}{\normalfont\small\color{turonmagenta}}
+\renewcommand{\cftfigleader}{\cftdotfill{\cftdotsep}}
+\renewcommand{\cfttableader}{\cftdotfill{\cftdotsep}}
+\setlength{\cftbeforefigskip}{.12em}
+\setlength{\cftbeforetabskip}{.12em}
+
+% ---------- Stable Tufte-style running heads ----------
+% The header does not mirror across odd/even pages: text column stays fixed.
+% Page numbers sit quietly in the bottom-right footer; magenta is reserved for links/TOC.
+\setlength{\headheight}{17pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfootoffset[R]{\dimexpr\marginparsep+\marginparwidth\relax}
+\renewcommand{\chaptermark}[1]{\markboth{\thechapter\quad\MakeTextLowercase{#1}}{}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\quad\MakeTextLowercase{#1}}}
+\fancyhead[L]{\scriptsize\scshape\color{turongray}\nouppercase{\leftmark}}
+\fancyfoot[R]{\footnotesize\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[R]{\footnotesize\thepage}\renewcommand{\headrulewidth}{0pt}}
+\fancypagestyle{empty}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}}
+
+% Stable reference helpers. Each macro prints the word and number as one link
+% with a non-breaking space inside the phrase, then lets \xspace preserve
+% the following word space in constructions such as "\chapref{ch:a} and".
+% Prefer the explicit space in source, but these also survive tight usages.
+\DeclareRobustCommand{\chapref}[1]{\hyperref[#1]{Chapter~\ref*{#1}}\xspace}
+\DeclareRobustCommand{\secref}[1]{\hyperref[#1]{Section~\ref*{#1}}\xspace}
+\DeclareRobustCommand{\figref}[1]{\hyperref[#1]{Figure~\ref*{#1}}\xspace}
+\DeclareRobustCommand{\tabref}[1]{\hyperref[#1]{Table~\ref*{#1}}\xspace}
+
+% Useful placeholders.
+\newcommand{\todo}[1]{\marginnote{\marginfont\color{turonmagenta}TODO: #1}[0pt]}

@@ -1,0 +1,8 @@
+% Place the official signed/institutional approval page at:
+%   frontmatter/approval-page.pdf
+% It will be inserted as a full-page PDF. If the file is absent, no approval
+% page is typeset; this avoids a fake placeholder page in the final document.
+\IfFileExists{frontmatter/approval-page.pdf}{%
+  \cleardoublepage
+  \includepdf[pages=-,pagecommand={\thispagestyle{empty}}]{frontmatter/approval-page.pdf}%
+}{}%
