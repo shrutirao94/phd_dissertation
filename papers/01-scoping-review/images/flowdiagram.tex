@@ -1,0 +1,84 @@
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+
+\definecolor{green-include}{RGB}{102,194,164}
+
+\begin{figure}
+{
+\resizebox{\textwidth}{!}{
+\small
+\begin{tikzpicture}
+    \tikzstyle{block}=[
+        draw,
+        thick,
+        text width=2.5cm,
+        minimum height=1.2cm,
+        align=center
+    ]
+
+    \tikzstyle{header}=[rotate=90, align=center]
+    \tikzstyle{line}=[-latex, draw, very thick]
+
+    \node[block, dotted] (pilot) {pilot searches};
+
+    \node[block, right = 2em of pilot, minimum height=1.2cm, text height=1cm, minimum width=4.2cm, text width=3cm] (search) {identification};
+    \node[draw, align=center,  minimum width=1.2cm] (acm) at ([xshift=-1.3cm, yshift=.12cm]search){\small ACM DL\\n=3653};
+    \node[draw, align=center,  minimum width=1.2cm] (scopus) at ([yshift=.12cm]search){\small Scopus\\n=1873};
+    \node[draw, align=center,  minimum width=1.2cm] (other) at ([xshift=1.3cm, yshift=.12cm]search){\scriptsize \faSnowflake \\n=22};
+
+    \node[block, right=4em of search] (tascreen) {title and abstract screening};
+    
+    \node[below=.8em of tascreen] (ie1) {\emph{criteria: building$+$people$+$technology}};
+
+    \node[block, right=4em of tascreen] (dedup) {deduplication};
+    
+    \node[block, right=4em of dedup] (ftscreen) {full-text screening};
+
+    \node[below=.8em of ftscreen] (ie2) {\emph{criteria: see \autoref{sec:iecrit}}};
+
+    \node[block, below = 1.4em of dedup] (snowball) {snowballing};
+    
+    \node[block, right=4em of ftscreen] (corpus) {final corpus: \textbf{N=192}};
+    % Draw edges
+
+    \path [line, dotted] (pilot) -- (search);
+
+    \path [line] (search) -- node [midway,above,align=center] {n=5548}(tascreen);
+
+    \path [line] (tascreen) -- node [midway, above, align=center] {n=368} (dedup);
+    
+    \path [line] (dedup) -- node [midway, above, align=center] {n=338} (ftscreen);
+
+    
+    \path [line] (ftscreen) -- node [midway, above, align=center] {n=192} (corpus);
+
+    \path [line, dotted] (ie2.south) |- ([xshift=2em]snowball.east) -- (snowball.east);
+    \path [line, dotted] (snowball.west) |- ([xshift=-5.75cm]snowball.west) -- (other.south);
+    
+    %\path [line] (screening-0) |- ([yshift=.35cm]screening-2.north) -- (screening-2.north);
+    %\path [line] (identification-1.east) -- (identification-2.west);
+    %\path [line] (screening-0) -- (screening-1);
+    %\path [line] (screening-0) -- (screening-excl);
+    %\path [line] (screening-1) -- (screening-2);
+    %\path [line] (screening-1) -- (eligibility-1);
+    %\path [line] (eligibility-1) -- (eligibility-2);
+    %\path [line] (screening-1) |- ([yshift=.35cm]eligibility-2.north) -- (eligibility-2);
+    %\path [line] (eligibility-1) -- (included-0);
+    %\path [line] (identification-2) |- ([yshift=.3cm]screening-0.north) -- (screening-0.north);
+    
+    
+    %\path [line, draw=gray] (identification-3) -- (screening-3);
+    %\path [line, draw=gray] (screening-3) -- (eligibility-other);
+    %\path [line, draw=gray] (eligibility-other.south) |- ([yshift=.35cm, xshift=4cm]included-prefinal.north) -- ([yshift=.35cm]included-prefinal.north) -- (included-prefinal.north);
+    %\path [line] (included-0) -- (included-prefinal);
+    
+    
+    %\path [line] (included-prefinal) -- (included-final);
+    
+\end{tikzpicture}
+}}
+\caption{This  flowchart demonstrates the scoping review process and the number of papers considered in each stage.}
+\label{fig:flowdiagram}
+\end{figure}
+
+%\footnotetext{Based on the 2020 template: \url{https://www.prisma-statement.org/prisma-2020-flow-diagram}, last accessed on May 15, 2024}

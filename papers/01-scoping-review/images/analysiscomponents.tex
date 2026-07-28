@@ -1,0 +1,86 @@
+\pgfdeclarelayer{background}
+\pgfsetlayers{background,main}
+
+%colorbrewer 3-class RdYlBu
+\definecolor{thisred}{RGB}{252,141,89} 
+\definecolor{thisyellow}{RGB}{255,255,191} 
+\definecolor{thisblue}{RGB}{145,191,219} 
+
+
+
+\begin{figure*}[t]
+{
+\footnotesize
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}
+    \tikzstyle{block}=[
+        draw,
+        node distance=0.5cm,
+        rounded corners,
+        thick,
+        text width= 2cm,
+        minimum height=.8cm,
+        align=center,
+        font=\small,
+        every node/.style={inner sep=0,outer sep=0},
+    ]
+
+    \tikzstyle{header}=[rotate=90, align=center]
+    \tikzstyle{line}=[draw, thick]%-latex for arrow lines
+
+
+    \node[] (statement1) {\emph{In this paper,}};
+    \node[block, right = .1cm of statement1, fill = thisred] (techinterv) {technological intervention};
+
+    \node[right = .3cm of techinterv] (statement2pre) { };
+    \node[above =.01cm of statement2pre] (statement2preabove) {\emph{is}};
+    \node[below =.01cm of statement2pre] (statement2prebelow) {\emph{are}};
+
+    \node[right = .3cm of statement2pre] (verbs1) {\emph{explored}}; 
+    \node[above = .05cm of verbs1] (verbs1above) {\emph{used}}; 
+    \node[below = .05cm of verbs1] (verbs1below) {\emph{envisioned}};
+    \node[below = .05cm of verbs1below] (ellips1) {\emph{...}};
+    \node[right = .1cm of verbs1] (statement2post) {\emph{as a way to}}; 
+
+    \node[right = .1cm of statement2post] (verbs2) {\emph{support}}; 
+    \node[above = .05cm of verbs2] (verbs2above) {\emph{improve}}; 
+    \node[below = .05cm of verbs2] (verbs2below) {\emph{impact}};
+    \node[below = .05cm of verbs2below] (ellips2) {\emph{...}};
+
+    \node[right = .1cm of verbs2] (statement2postpost) {\emph{users'}};
+
+    \node[block, right = .1cm of verbs2, fill = thisblue] (the) {targeted human experience};
+
+    \node[right = .1cm of the] (statement3) {\emph{through}}; 
+
+    \node[block, right = .1cm of statement3, fill = thisyellow] (designmech) {primary design mechanism}; 
+    
+    \node[right = .1cm of designmech] (colon) {\emph{.}}; 
+
+    %\node[below = of techinterv] (statement1) {\emph In this paper, ... is used explored envisioned as a way to improve support influence users' ...  through ...};
+
+    % Draw edges
+    %\path [line] (RQs) -- (protocol);
+    %\path [line] (protocol) -- (prereg);
+    %\path [line] (prereg) -- (search);
+    %\path [line] (search) -- (inclExcl);
+    %\path [line] (inclExcl) -- (appraisal);
+    
+    % \path [line] (linecoding) -- (themes);
+    % \path [line] ([xshift=.3cm]linecoding.south west) -- ([xshift=.3cm, yshift=-.92cm]linecoding.south west) -- (1storder.west);
+    % \path [line] ([xshift=.3cm, yshift=-.92cm]linecoding.south west) -- ([xshift=.3cm, yshift=-2.25cm]linecoding.south west) -- (initialrealism.west);
+    % \path [line] ([xshift=-1cm]linecoding.south east) -- ([xshift=-1cm, yshift=-.92cm]linecoding.south east) -- (2ndorder.west);
+    
+    % \path [line] (themes) -- (deductive);
+    % \path [line] (deductive) -- (mapping);
+    % %\path [line] (themes) -- (mapping);
+    % \path [line] ([xshift=-.7cm]themes.south) -- ([xshift=-.7cm, yshift=-.92cm]themes.south) -- (3rdorder.west);
+    
+    % \path [line] (theory1) -- (deductive);
+    % \path [line] (theory2) -- (deductive);
+    % \path [line] (initialrealism.east) -- (mapping.west);
+\end{tikzpicture}
+}}
+\caption{To examine the suitability and the terminology of the three core findings---targeted human experiences, primary design mechanisms, and technological interventions---we structured them in a sentence, illustrated in this diagram. For example, a paper might be described in the form of ``In this paper, \textbf{Environmental Sensing} is used as a way to support \textbf{Comfort} through \textbf{Personalisation}''.}\label{fig:pieces}
+\Description{...}
+\end{figure*}

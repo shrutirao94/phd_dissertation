@@ -124,6 +124,18 @@
   \usepackage{pifont}
 \fi
 
+% \usepackage[
+%   paperwidth=170mm,
+%   paperheight=240mm,
+%   left=22mm,
+%   top=24mm,
+%   textwidth=92mm,
+%   textheight=190mm,
+%   marginparsep=8mm,
+%   marginparwidth=33mm,
+%   includehead=false,
+%   includefoot=false
+% ]{geometry}
 % ---------- Page and text style ----------
 \usepackage[
   a4paper,
@@ -138,6 +150,7 @@
 \usepackage{microtype}
 \usepackage{booktabs}
 \usepackage{graphicx}
+\usepackage{import}
 \usepackage{xcolor}
 \usepackage{enumitem}
 \usepackage{amsmath,amssymb}
@@ -150,6 +163,7 @@
 \usepackage{fancyhdr}
 \usepackage{fancyvrb}
 \usepackage{caption}
+\usepackage{subcaption}
 \usepackage{marginnote}
 \usepackage{changepage}
 \usepackage{etoolbox}
@@ -158,7 +172,31 @@
 \usepackage{xparse}
 \usepackage{xspace}
 \usepackage{hyperref}
-
+\usepackage{svg}
+\usepackage{tikz}
+\usepackage{xparse}
+\usetikzlibrary{
+  shapes,
+  arrows,
+  positioning,
+  trees,
+  shapes.geometric,
+  calc,
+  fit
+}
+\usepackage{array}
+\providecommand{\Description}[1]{}
+\newcolumntype{L}[1]{
+  >{\RaggedRight\arraybackslash}p{#1}
+}
+\usepackage{fontawesome5}
+\usepackage{adjustbox}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{pdflscape}
+\usepackage{ragged2e}
+\usepackage{tabularx}
+\newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
 % Front-matter lists can breathe slightly into the fixed right margin.
 % This does not mirror page geometry or affect the main text column.
 \newenvironment{tocwide}{%
@@ -206,9 +244,24 @@
   pdftitle={\thesistitle}
 }
 
+
+
 % Bibliography.
-\usepackage[backend=biber,style=authoryear,doi=false,isbn=false,url=true,maxcitenames=2,maxbibnames=99]{biblatex}
+\usepackage[
+  backend=biber,
+  style=numeric-comp,
+  sorting=nyt,
+  natbib=true,
+  doi=true,
+  isbn=false,
+  url=true,
+  maxcitenames=2,
+  maxbibnames=99,
+  giveninits=true
+]{biblatex}
+
 \addbibresource{references.bib}
+\addbibresource{papers/01-scoping-review/scoping-review.bib}
 
 % Slightly richer, darker book texture without making the page loose.
 \linespread{.96}
@@ -374,22 +427,128 @@
   \end{minipage}\end{lrbox}\marginnote{\usebox{\marginfigurebox}}[0pt]%
 }
 
-\newenvironment{fullwidth}{%
-  \begin{adjustwidth}{0pt}{-55mm}
-}{%
-  \end{adjustwidth}
+% \newenvironment{fullwidth}{%
+%   \begin{adjustwidth}{0pt}{-55mm}
+% }{%
+%   \end{adjustwidth}
+% }
+
+% ---------- Figure and table width system ----------
+% Wide material spans the main text column + fixed right-margin note column.
+% It does not mirror and does not change the page geometry.
+\newlength{\turonwideoffset}
+\AtBeginDocument{%
+  \setlength{\turonwideoffset}{\dimexpr\marginparsep+\marginparwidth\relax}%
 }
 
+\newenvironment{fullwidth}{%
+  \begin{adjustwidth}{0pt}{-\turonwideoffset}%
+}{%
+  \end{adjustwidth}%
+}
+
+
+% Main-column figure: use for ordinary, simple figures.
+\NewDocumentEnvironment{mainfigure}{O{tbp}}
+  {%
+    \figure[#1]%
+    \centering
+    \captionsetup{width=\linewidth}%
+  }
+  {%
+    \endfigure
+  }
+
+% Wide figure: use for dense diagrams, frameworks, Sankeys, system diagrams.
+% Spans main text + right-margin note column.
+\NewDocumentEnvironment{widefigure}{O{tbp}}
+  {%
+    \figure[#1]%
+    \fullwidth
+    \centering
+    \captionsetup{width=\linewidth}%
+  }
+  {%
+    \endfullwidth
+    \endfigure
+  }
+
+% Main-column table: use for compact summary tables.
+\NewDocumentEnvironment{maintable}{O{tbp}}
+  {%
+    \table[#1]%
+    \centering
+    \small
+    \captionsetup{width=\linewidth}%
+  }
+  {%
+    \endtable
+  }
+
+% Wide table: use for tables that need the text column + margin column.
+\NewDocumentEnvironment{widetable}{O{tbp}}
+  {%
+    \table[#1]%
+    \fullwidth
+    \centering
+    \small
+    \captionsetup{width=\linewidth}%
+  }
+  {%
+    \endfullwidth
+    \endtable
+  }
+
+% ---------- Appendix table helpers ----------
+% Use for dense appendix tables. Avoid resizebox unless absolutely necessary.
+\newcommand{\appendixtablefont}{\fontsize{8.6}{10.2}\selectfont}
+\newcommand{\appendixwidefont}{\fontsize{9.2}{11}\selectfont}
+
+\newcommand{\tighttable}{%
+  \setlength{\tabcolsep}{3.5pt}%
+  \renewcommand{\arraystretch}{1.08}%
+}
+
+\newcommand{\verytighttable}{%
+  \setlength{\tabcolsep}{2.8pt}%
+  \renewcommand{\arraystretch}{1.04}%
+}
 % Lists: compact, solid bullet, no report-like gaps.
 \setlist[itemize]{leftmargin=1.2em,itemsep=.15em,topsep=.35em,parsep=0pt,partopsep=0pt,label={\color{turonblue}$\bullet$}}
 \setlist[enumerate]{leftmargin=1.45em,itemsep=.15em,topsep=.35em,parsep=0pt,partopsep=0pt}
 
-% Captions and list entries: compact, book-like captions rather than default bold labels.
-% The label is distinguished quietly; the caption remains a prose note.
-\DeclareCaptionLabelSeparator{turoncaption}{.\enspace}
-\DeclareCaptionFormat{turoncaptionformat}{%
-  \footnotesize\hangindent=1.8em\hangafter=1 #1#2#3\par}
-\captionsetup{font={footnotesize},labelfont={sc,color=turonblue},textfont=normalfont,format=turoncaptionformat,justification=raggedright,singlelinecheck=false,labelsep=turoncaption,aboveskip=.55\baselineskip,belowskip=.25\baselineskip}
+% % Captions and list entries: compact, book-like captions rather than default bold labels.
+% % The label is distinguished quietly; the caption remains a prose note.
+% \DeclareCaptionLabelSeparator{turoncaption}{.\enspace}
+% \DeclareCaptionFormat{turoncaptionformat}{%
+%   \footnotesize\hangindent=1.8em\hangafter=1 #1#2#3\par}
+% \captionsetup{font={footnotesize},labelfont={sc,color=turonblue},textfont=normalfont,format=turoncaptionformat,justification=raggedright,singlelinecheck=false,labelsep=turoncaption,aboveskip=.55\baselineskip,belowskip=.25\baselineskip}
+% \captionsetup[figure]{name=Figure}
+% \captionsetup[table]{name=Table}
+
+% Captions and list entries: compact, book-like captions.
+% Uses real hanging captions so wrapped lines align after "Figure 2.2."
+\DeclareCaptionLabelFormat{turonlabel}{%
+  \textcolor{turonblue}{\scshape #1~#2}%
+}
+
+\DeclareCaptionLabelSeparator{turoncaption}{.\quad}
+
+\captionsetup{
+  format=hang,
+  labelformat=turonlabel,
+  labelsep=turoncaption,
+  justification=RaggedRight,
+  singlelinecheck=false,
+  font={footnotesize},
+  labelfont={normalfont},
+  textfont={normalfont},
+  margin=0pt,
+  indention=0pt,
+  aboveskip=.55\baselineskip,
+  belowskip=.25\baselineskip
+}
+
 \captionsetup[figure]{name=Figure}
 \captionsetup[table]{name=Table}
 
