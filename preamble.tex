@@ -165,6 +165,7 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{marginnote}
+\usepackage{marginfix}
 \usepackage{changepage}
 \usepackage{etoolbox}
 \usepackage{textcase}
@@ -196,6 +197,8 @@
 \usepackage{pdflscape}
 \usepackage{ragged2e}
 \usepackage{tabularx}
+\usepackage{float}
+\usepackage{placeins}
 \newcolumntype{Y}{>{\RaggedRight\arraybackslash}X}
 % Front-matter lists can breathe slightly into the fixed right margin.
 % This does not mirror page geometry or affect the main text column.
@@ -368,35 +371,106 @@
 
 % A compact opening synopsis: marker + paragraph flow, not a labelled box.
 % It always begins below the chapter epigraph, rather than visually merging with it.
-\newenvironment{synopsis}{%
+% \newenvironment{synopsis}{%
+%   \par\addvspace{0pt}%
+%   \begingroup\color{black}\openingmark\ignorespaces
+% }{%
+%   \par\endgroup\addvspace{0pt}%
+% }
+
+\renewenvironment{synopsis}{%
   \par\addvspace{0pt}%
-  \begingroup\color{black}\openingmark\ignorespaces
+  \begingroup
+  \fontsize{10.5}{12.4}\selectfont
+  \color{black}%
+  \openingmark\ignorespaces
 }{%
   \par\endgroup\addvspace{0pt}%
 }
-
 % Turon-like opening paragraph: a small hanging marker plus a moderated small-caps lead phrase.
-\newcommand{\openingpara}[2]{%
+% \newcommand{\openingpara}[2]{%
+%   \par\addvspace{0pt}%
+%   \noindent\llap{\raisebox{.01em}{\scriptsize\color{turonblue!55!black}\synopsismarker}\hspace{.7em}}%
+%   {\scshape\textls[4]{#1}} #2\par\addvspace{0pt}%
+% }
+
+% Turon-like opening paragraph: marker + uppercase/small-caps lead phrase.
+% \newcommand{\openingpara}[2]{%
+%   \par\addvspace{0pt}%
+%   \noindent\llap{\raisebox{.01em}{\scriptsize\color{turonblue!55!black}\synopsismarker}\hspace{.7em}}%
+%   {\scshape\textls[8]{\MakeTextUppercase{#1}}} #2\par\addvspace{0pt}%
+% }
+% ---------- Turon-style small-caps lead-ins ----------
+% The inspiration uses small caps, not bold all-caps.
+% Keep the source text lowercase/titlecase; this macro renders it as small caps.
+\newcommand{\turonlead}[1]{%
+  {\normalfont\scshape\textls[55]{\MakeTextLowercase{#1}}}%
+}
+
+\renewcommand{\openingpara}[2]{%
   \par\addvspace{0pt}%
   \noindent\llap{\raisebox{.01em}{\scriptsize\color{turonblue!55!black}\synopsismarker}\hspace{.7em}}%
-  {\scshape\textls[4]{#1}} #2\par\addvspace{0pt}%
+  \turonlead{#1} #2\par\addvspace{0pt}%
 }
+
+\newcommand{\synopsislead}[2]{%
+  \turonlead{#1} #2%
+}
+% Uppercase/small-caps lead phrase for use inside the synopsis environment.
+% Use when the synopsis environment already provides the blue opening marker.
+% \newcommand{\synopsislead}[2]{%
+%   {\scshape\textls[8]{\MakeTextUppercase{#1}}} #2%
+% }
+
+% ---------- Chapter source note ----------
+% Used at the end of chapter-opening pages to distinguish the publication
+% basis of an included paper chapter from the main synopsis text.
+\newcommand{\chaptersource}[1]{%
+  \par\addvspace{1.15\baselineskip}%
+  \noindent\textcolor{black!24}{\rule{.52\linewidth}{0.3pt}}%
+  \par\vspace{.45\baselineskip}%
+  {\footnotesize\RaggedRight
+    {\normalfont\scshape\textls[35]{\textcolor{turonblue}{Chapter source}}}\par
+    \vspace{.22\baselineskip}%
+    #1\par
+  }%
+  \par\addvspace{.25\baselineskip}%
+}
+% \newcommand{\chaptersource}[1]{%
+%   \par\addvspace{.95\baselineskip}%
+%   \noindent\textcolor{black!22}{\rule{.42\linewidth}{0.3pt}}%
+%   \par\vspace{.32\baselineskip}%
+%   {\footnotesize\RaggedRight
+%     {\scshape\textls[30]{\textcolor{turonblue}{Chapter source}}}\quad
+%     #1\par
+%   }%
+% }
 
 % ---------- Sidenotes and margin material ----------
 % Keep all notes in the fixed right margin. Do not mirror them on even pages.
-\setlength{\marginparpush}{9pt}
+\setlength{\marginparpush}{6pt}
 \setlength{\marginparsep}{8.5mm}
 \setlength{\marginparwidth}{34mm}
-\renewcommand*{\marginfont}{\fontsize{6.25}{7.6}\selectfont\raggedright}
+\renewcommand*{\marginfont}{%
+  \fontsize{6.2}{7.25}\selectfont
+  \RaggedRight
+  \setlength{\emergencystretch}{1em}%
+}
 \newcommand*{\epigraphmarginfont}{\fontsize{7.2}{8.6}\selectfont\raggedleft}
 \renewcommand*{\raggedleftmarginnote}{\raggedright}
 \renewcommand*{\raggedrightmarginnote}{\raggedright}
 \newcounter{sidenote}
 \newcommand{\turonnotemark}{\textsuperscript{\tiny\textcolor{turonmagenta!65!black}{\thesidenote}}}
 \newcommand{\turonmarginmark}{\textsuperscript{\tiny\textcolor{turonmagenta!65!black}{\thesidenote}}}
-\newcommand{\turonmarginnote}[1]{%
-  \normalmarginpar% right margin only in oneside layout
-  \marginpar{\marginfont\turonmarginmark\,\textcolor{black}{#1}}%
+\renewcommand{\turonmarginnote}[1]{%
+  \normalmarginpar%
+  \marginpar{%
+    \marginfont
+    \setlength{\parindent}{0pt}%
+    \setlength{\parskip}{0pt}%
+    \RaggedRight
+    \turonmarginmark\,\textcolor{black}{#1}%
+  }%
 }
 \newcommand{\sidenote}[1]{%
   \refstepcounter{sidenote}%
@@ -419,7 +493,14 @@
   \par\addvspace{0pt}%
 }
 \newcommand{\chapterepigraph}[2]{\sidequote{#1}{#2}}
-
+\newcommand{\sidenoteup}[2]{%
+  \refstepcounter{sidenote}%
+  \turonnotemark%
+  \marginnote{%
+    \marginfont
+    \turonmarginmark\,\textcolor{black}{#2}%
+  }[-#1]%
+}
 \newsavebox{\marginfigurebox}
 \newenvironment{marginfigure}{%
   \begin{lrbox}{\marginfigurebox}\begin{minipage}{\marginparwidth}\marginfont\centering
@@ -499,6 +580,19 @@
     \endtable
   }
 
+% ---------- Float placement tuning ----------
+% Allow figures and tables to appear nearer to where they are introduced.
+\renewcommand{\topfraction}{0.90}
+\renewcommand{\bottomfraction}{0.80}
+\renewcommand{\textfraction}{0.07}
+\renewcommand{\floatpagefraction}{0.75}
+\renewcommand{\dbltopfraction}{0.90}
+\renewcommand{\dblfloatpagefraction}{0.75}
+
+\setcounter{topnumber}{4}
+\setcounter{bottomnumber}{3}
+\setcounter{totalnumber}{6}
+
 % ---------- Appendix table helpers ----------
 % Use for dense appendix tables. Avoid resizebox unless absolutely necessary.
 \newcommand{\appendixtablefont}{\fontsize{8.6}{10.2}\selectfont}
@@ -534,10 +628,31 @@
 
 \DeclareCaptionLabelSeparator{turoncaption}{.\quad}
 
+% ---------- Captions ----------
+% Turon/Tufte-like captions: a small left label column and prose caption to the right.
+% This keeps long published captions readable without shortening them.
+
+\newlength{\turoncaptionlabelwidth}
+\setlength{\turoncaptionlabelwidth}{20 mm}
+
+\DeclareCaptionLabelFormat{turonlabel}{%
+  \textcolor{turonblue}{\scshape #1~#2.}%
+}
+
+\DeclareCaptionFormat{turoncaptionformat}{%
+  \noindent
+  \makebox[\turoncaptionlabelwidth][l]{#1}%
+  \begin{minipage}[t]{\dimexpr\linewidth-\turoncaptionlabelwidth\relax}
+    \RaggedRight
+    #3%
+  \end{minipage}%
+  \par
+}
+
 \captionsetup{
-  format=hang,
+  format=turoncaptionformat,
   labelformat=turonlabel,
-  labelsep=turoncaption,
+  labelsep=none,
   justification=RaggedRight,
   singlelinecheck=false,
   font={footnotesize},
@@ -551,6 +666,7 @@
 
 \captionsetup[figure]{name=Figure}
 \captionsetup[table]{name=Table}
+
 
 % Code blocks.
 \fvset{fontsize=\small,frame=single,rulecolor=\color{black!15},framesep=3mm}
