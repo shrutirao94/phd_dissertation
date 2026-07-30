@@ -3,7 +3,6 @@
 \ifluatex
   \usepackage{fontspec}
   \defaultfontfeatures{Ligatures=TeX,Renderer=Harfbuzz}
-
   % Turon used Minion Pro as both text and display face.  Keep headings,
   % chapter numbers, titles, and body text on the same serif family.
   % Free fallback order is deliberately conservative and book-like:
@@ -210,11 +209,16 @@
 
 % Turon-like accent colours: muted blue for major structural titles;
 % restrained wine/magenta for page numbers, sidenote marks, links, and refs.
-\definecolor{turonblue}{HTML}{2F6F8F}
-\definecolor{turonmagenta}{HTML}{8B1E5A}
+% \definecolor{turonblue}{HTML}{005080}
+% \definecolor{turonmagenta}{HTML}{8B1E5A}
+% \definecolor{turongray}{HTML}{555555}
+% \definecolor{turonlightgray}{HTML}{777777}
+
+
+\definecolor{turonblue}{HTML}{005080}
+\definecolor{turonmagenta}{HTML}{9A005D}
 \definecolor{turongray}{HTML}{555555}
 \definecolor{turonlightgray}{HTML}{777777}
-
 % Baseline-based spacing for the chapter-opening grid and heading hierarchy.
 % Turon-like refinement comes from a tight baseline rhythm, not large cm-scale gaps.
 \newlength{\chapterGapNumTitle}
@@ -371,14 +375,7 @@
 
 % A compact opening synopsis: marker + paragraph flow, not a labelled box.
 % It always begins below the chapter epigraph, rather than visually merging with it.
-% \newenvironment{synopsis}{%
-%   \par\addvspace{0pt}%
-%   \begingroup\color{black}\openingmark\ignorespaces
-% }{%
-%   \par\endgroup\addvspace{0pt}%
-% }
-
-\renewenvironment{synopsis}{%
+\newenvironment{synopsis}{%
   \par\addvspace{0pt}%
   \begingroup
   \fontsize{10.5}{12.4}\selectfont
@@ -407,7 +404,7 @@
   {\normalfont\scshape\textls[55]{\MakeTextLowercase{#1}}}%
 }
 
-\renewcommand{\openingpara}[2]{%
+\newcommand{\openingpara}[2]{%
   \par\addvspace{0pt}%
   \noindent\llap{\raisebox{.01em}{\scriptsize\color{turonblue!55!black}\synopsismarker}\hspace{.7em}}%
   \turonlead{#1} #2\par\addvspace{0pt}%
@@ -421,6 +418,45 @@
 % \newcommand{\synopsislead}[2]{%
 %   {\scshape\textls[8]{\MakeTextUppercase{#1}}} #2%
 % }
+
+% ----------chapter closing page ----------
+% A quiet dissertation-level coda placed after each paper chapter.
+% The optional argument is retained for compatibility but is not printed.
+
+\newcommand{\chapterclosinglead}[2]{%
+  \par\addvspace{0pt}%
+  \noindent\turonlead{#1} #2\par
+}
+
+\NewDocumentEnvironment{chapterclosing}{O{} m}
+  {%
+    \clearpage
+    \thispagestyle{plain}%
+    \begingroup
+    \vspace*{0.18\textheight}%
+
+    {\noindent\normalfont\Large\itshape\color{black!76}#2\par}%
+    \vspace{.45\baselineskip}%
+
+    \noindent\textcolor{black!24}{\rule{\textwidth}{0.3pt}}%
+    \par\vspace{.9\baselineskip}%
+
+    \fontsize{10.5}{12.4}\selectfont
+    \RaggedRight
+    \setlength{\parindent}{1em}%
+    \setlength{\parskip}{0pt}%
+  }
+  {%
+    \par
+    \endgroup
+    \clearpage
+  }
+
+% Optional final bridge paragraph, now plain rather than labelled.
+\newcommand{\chaptercarryforward}[1]{%
+  \par\addvspace{.75\baselineskip}%
+  {\footnotesize\RaggedRight #1\par}%
+}
 
 % ---------- Chapter source note ----------
 % Used at the end of chapter-opening pages to distinguish the publication
@@ -436,15 +472,7 @@
   }%
   \par\addvspace{.25\baselineskip}%
 }
-% \newcommand{\chaptersource}[1]{%
-%   \par\addvspace{.95\baselineskip}%
-%   \noindent\textcolor{black!22}{\rule{.42\linewidth}{0.3pt}}%
-%   \par\vspace{.32\baselineskip}%
-%   {\footnotesize\RaggedRight
-%     {\scshape\textls[30]{\textcolor{turonblue}{Chapter source}}}\quad
-%     #1\par
-%   }%
-% }
+
 
 % ---------- Sidenotes and margin material ----------
 % Keep all notes in the fixed right margin. Do not mirror them on even pages.
@@ -462,7 +490,7 @@
 \newcounter{sidenote}
 \newcommand{\turonnotemark}{\textsuperscript{\tiny\textcolor{turonmagenta!65!black}{\thesidenote}}}
 \newcommand{\turonmarginmark}{\textsuperscript{\tiny\textcolor{turonmagenta!65!black}{\thesidenote}}}
-\renewcommand{\turonmarginnote}[1]{%
+\newcommand{\turonmarginnote}[1]{%
   \normalmarginpar%
   \marginpar{%
     \marginfont
@@ -622,11 +650,7 @@
 
 % Captions and list entries: compact, book-like captions.
 % Uses real hanging captions so wrapped lines align after "Figure 2.2."
-\DeclareCaptionLabelFormat{turonlabel}{%
-  \textcolor{turonblue}{\scshape #1~#2}%
-}
 
-\DeclareCaptionLabelSeparator{turoncaption}{.\quad}
 
 % ---------- Captions ----------
 % Turon/Tufte-like captions: a small left label column and prose caption to the right.
@@ -672,7 +696,7 @@
 \fvset{fontsize=\small,frame=single,rulecolor=\color{black!15},framesep=3mm}
 
 % ---------- Contents and lists ----------
-\setcounter{tocdepth}{2}
+\setcounter{tocdepth}{1}
 \renewcommand{\contentsname}{Contents}
 \renewcommand{\listfigurename}{Figures}
 \renewcommand{\listtablename}{Tables}
@@ -690,27 +714,93 @@
 \setlength{\cftafterloftitleskip}{.5em}
 \setlength{\cftafterlottitleskip}{.5em}
 
-\newcommand{\tocnohyphen}{\hyphenpenalty=10000\exhyphenpenalty=10000\pretolerance=10000\tolerance=2200\emergencystretch=4.0em\relax}
-\renewcommand{\cftpartfont}{\tocnohyphen\normalfont\small\color{turonblue}\scshape}
-\renewcommand{\cftpartpagefont}{\normalfont\small\color{turonmagenta}}
-\renewcommand{\cftchapfont}{\tocnohyphen\normalfont\small}
-\renewcommand{\cftchappagefont}{\normalfont\small\color{turonmagenta}}
-\renewcommand{\cftsecfont}{\tocnohyphen\normalfont\small}
-\renewcommand{\cftsecpagefont}{\normalfont\small\color{turonmagenta}}
-\renewcommand{\cftsubsecfont}{\tocnohyphen\normalfont\footnotesize}
-\renewcommand{\cftsubsecpagefont}{\normalfont\footnotesize\color{turonmagenta}}
-% Slightly wider dot spacing keeps long entries from feeling mechanically ruled.
-\renewcommand{\cftdotsep}{12.0}
+% TOC entries: compact, Turon/classicthesis-like hierarchy.
+\newcommand{\tocnohyphen}{%
+  \hyphenpenalty=10000%
+  \exhyphenpenalty=10000%
+  \pretolerance=10000%
+  \tolerance=2200%
+  \emergencystretch=4.0em%
+  \relax
+}
+
+% Parts: blue, spaced, small caps.
+\renewcommand{\cftpartfont}{%
+  \tocnohyphen\normalfont\small\scshape\bfseries\color{turonblue}%
+}
+\renewcommand{\cftpartpagefont}{%
+  \normalfont\small\bfseries\color{turonmagenta}%
+}
+
+% Chapters: compact small caps, like the reference.
+\renewcommand{\cftchapfont}{%
+  \tocnohyphen\normalfont\small\scshape\bfseries\color{black}%
+}
+\renewcommand{\cftchappagefont}{%
+  \normalfont\small\bfseries\color{turonmagenta}%
+}
+
+% Sections: quieter than chapters.
+\renewcommand{\cftsecfont}{%
+  \tocnohyphen\normalfont\small\color{black}%
+}
+\renewcommand{\cftsecpagefont}{%
+  \normalfont\small\color{turonmagenta}%
+}
+
+% Subsections: available if tocdepth is later changed back to 2.
+\renewcommand{\cftsubsecfont}{%
+  \tocnohyphen\normalfont\footnotesize\color{black}%
+}
+\renewcommand{\cftsubsecpagefont}{%
+  \normalfont\footnotesize\color{turonmagenta}%
+}
+
+% Tighter dot leaders. Lower number = denser dots.
+\renewcommand{\cftdotsep}{3.8}
 \renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
 \renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
 \renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}}
-\setlength{\cftbeforepartskip}{.95em}
-\setlength{\cftbeforechapskip}{.48em}
-\setlength{\cftbeforesecskip}{.16em}
+
+% Vertical rhythm.
+\setlength{\cftbeforepartskip}{.85em}
+\setlength{\cftbeforechapskip}{.34em}
+\setlength{\cftbeforesecskip}{.08em}
+\setlength{\cftbeforesubsecskip}{.02em}
+
+% Indentation.
 \setlength{\cftpartindent}{0pt}
-\setlength{\cftchapindent}{1.2em}
-\setlength{\cftsecindent}{3.0em}
-\setlength{\cftsubsecindent}{4.7em}
+\setlength{\cftchapindent}{0pt}
+\setlength{\cftsecindent}{1.95em}
+\setlength{\cftsubsecindent}{3.6em}
+
+% Number widths.
+\setlength{\cftpartnumwidth}{1.9em}
+\setlength{\cftchapnumwidth}{1.7em}
+\setlength{\cftsecnumwidth}{2.9em}
+\setlength{\cftsubsecnumwidth}{3.5em}
+
+% \newcommand{\tocnohyphen}{\hyphenpenalty=10000\exhyphenpenalty=10000\pretolerance=10000\tolerance=2200\emergencystretch=4.0em\relax}
+% \renewcommand{\cftpartfont}{\tocnohyphen\normalfont\small\color{turonblue}\scshape}
+% \renewcommand{\cftpartpagefont}{\normalfont\small\color{turonmagenta}}
+% \renewcommand{\cftchapfont}{\tocnohyphen\normalfont\small}
+% \renewcommand{\cftchappagefont}{\normalfont\small\color{turonmagenta}}
+% \renewcommand{\cftsecfont}{\tocnohyphen\normalfont\small}
+% \renewcommand{\cftsecpagefont}{\normalfont\small\color{turonmagenta}}
+% \renewcommand{\cftsubsecfont}{\tocnohyphen\normalfont\footnotesize}
+% \renewcommand{\cftsubsecpagefont}{\normalfont\footnotesize\color{turonmagenta}}
+% % Slightly wider dot spacing keeps long entries from feeling mechanically ruled.
+% \renewcommand{\cftdotsep}{2.8}
+% \renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+% \renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+% \renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}}
+% \setlength{\cftbeforepartskip}{.95em}
+% \setlength{\cftbeforechapskip}{.48em}
+% \setlength{\cftbeforesecskip}{.16em}
+% \setlength{\cftpartindent}{0pt}
+% \setlength{\cftchapindent}{1.2em}
+% \setlength{\cftsecindent}{3.0em}
+% \setlength{\cftsubsecindent}{4.7em}
 
 % Figure/table lists: Turon-like prefix and magenta page numbers.
 \renewcommand{\cftfigpresnum}{Figure~}
