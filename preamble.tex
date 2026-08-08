@@ -118,7 +118,7 @@
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{tgpagella}
-  \usepackage[scaled=.92]{tgheros}
+  \usepackage[scale=.92]{tgheros}
   \usepackage{beramono}
   \usepackage{pifont}
 \fi
@@ -336,16 +336,50 @@
 % Section headings follow the same baseline rhythm as the chapter opening.
 % They are body-size navigation marks, differentiated by small caps, tracking,
 % and slightly stronger weight rather than by larger display scale.
+% \titleformat{\section}
+%   {\normalfont\normalsize\scshape\bfseries\lsstyle\raggedright\color{black}}
+%   {\thesection}{0.75em}{}
+% \titlespacing*{\section}{0pt}{\sectionBefore}{\sectionAfter}
+
+% \titleformat{\subsection}
+%   {\normalfont\normalsize\scshape\bfseries\lsstyle\raggedright\color{black}}
+%   {\thesubsection}{0.7em}{}
+% \titlespacing*{\subsection}{0pt}{\subsectionBefore}{\subsectionAfter}
+
+% ---------- Section heading style ----------
+% Main section headings: compact, tracked, uppercase small-caps.
+% Slightly quieter than the chapter-opening title.
+
+\newcommand{\turonsectiontitle}[1]{%
+  \textls[35]{\MakeTextUppercase{#1}}%
+}
+
+\newcommand{\turonsubsectiontitle}[1]{%
+  \textls[25]{#1}%
+}
+
 \titleformat{\section}
-  {\normalfont\normalsize\scshape\bfseries\lsstyle\raggedright\color{black}}
-  {\thesection}{0.75em}{}
-\titlespacing*{\section}{0pt}{\sectionBefore}{\sectionAfter}
+  {\normalfont\small\scshape\bfseries\raggedright\color{black}}
+  {\thesection}
+  {1.0em}
+  {\turonsectiontitle}
+
+\titlespacing*{\section}
+  {0pt}
+  {1.75\baselineskip}
+  {1.05\baselineskip}
 
 \titleformat{\subsection}
-  {\normalfont\normalsize\scshape\bfseries\lsstyle\raggedright\color{black}}
-  {\thesubsection}{0.7em}{}
-\titlespacing*{\subsection}{0pt}{\subsectionBefore}{\subsectionAfter}
+  {\normalfont\small\scshape\bfseries\raggedright\color{black}}
+  {\thesubsection}
+  {.85em}
+  {\turonsubsectiontitle}
 
+\titlespacing*{\subsection}
+  {0pt}
+  {1.35\baselineskip}
+  {.75\baselineskip}
+  
 % Part pages: quiet "Part I" plus blue small-caps/all-caps title, centered mid-page.
 \newcommand{\turonparttitle}[1]{\textls[55]{\MakeTextUppercase{#1}}}
 \titleformat{\part}[display]
@@ -384,6 +418,20 @@
 }{%
   \par\endgroup\addvspace{0pt}%
 }
+
+% % ---------- Synopsis block ----------
+% \newenvironment{synopsis}{%
+%   \par\addvspace{0pt}%
+%   \begingroup
+%   \fontsize{10.5}{12.4}\selectfont
+%   \color{black}%
+%   \noindent
+%   \llap{\raisebox{.01em}{\scriptsize\color{turonblue!55!black}\synopsismarker}\hspace{.7em}}%
+%   {\normalfont\scshape\textls[45]{Synopsis}}\quad
+%   \ignorespaces
+% }{%
+%   \par\endgroup\addvspace{0pt}%
+% }
 % Turon-like opening paragraph: a small hanging marker plus a moderated small-caps lead phrase.
 % \newcommand{\openingpara}[2]{%
 %   \par\addvspace{0pt}%
@@ -842,3 +890,72 @@
 
 % Useful placeholders.
 \newcommand{\todo}[1]{\marginnote{\marginfont\color{turonmagenta}TODO: #1}[0pt]}
+
+
+% ---------- Research questions and research contributions ----------
+% Use these to create stable, referable labels such as RQ1, RQ2, RC1, RC2.
+
+\newcounter{researchquestion}
+\newcounter{researchcontribution}
+
+\newcommand{\rqtag}[1]{%
+  {\normalfont\normalsize\textcolor{turonblue}{RQ~#1}}%
+}
+
+\newcommand{\rctag}[1]{%
+  {\normalfont\normalsize\textcolor{turonblue}{RC~#1}}%
+}
+
+\newenvironment{researchquestions}
+  {%
+    \setcounter{researchquestion}{0}%
+    \begin{list}{}{%
+      \setlength{\leftmargin}{4.7em}%
+      \setlength{\labelwidth}{3.7em}%
+      \setlength{\labelsep}{1em}%
+      \setlength{\itemsep}{0.65\baselineskip}%
+      \setlength{\parsep}{0pt}%
+      \setlength{\topsep}{0.55\baselineskip}%
+    }%
+  }
+  {\end{list}}
+
+\newcommand{\researchquestion}[2]{%
+  \refstepcounter{researchquestion}%
+  \item[\rqtag{\theresearchquestion}]%
+  \label{rq:#1}%
+  #2%
+}
+
+\newcommand{\rqref}[1]{%
+  \hyperref[rq:#1]{\rqtag{\ref*{rq:#1}}}%
+}
+
+\newenvironment{researchcontributions}
+  {%
+    \setcounter{researchcontribution}{0}%
+    \begin{list}{}{%
+      \setlength{\leftmargin}{4.7em}%
+      \setlength{\labelwidth}{3.7em}%
+      \setlength{\labelsep}{1em}%
+      \setlength{\itemsep}{0.75\baselineskip}%
+      \setlength{\parsep}{0pt}%
+      \setlength{\topsep}{0.55\baselineskip}%
+    }%
+  }
+  {\end{list}}
+
+\newcommand{\researchcontribution}[2]{%
+  \refstepcounter{researchcontribution}%
+  \item[\rctag{\theresearchcontribution}]%
+  \label{rc:#1}%
+  #2%
+}
+
+\newcommand{\rcref}[1]{%
+  \hyperref[rc:#1]{\rctag{\ref*{rc:#1}}}%
+}
+
+\newcommand{\orqref}{%
+  \hyperref[rq:overarching]{\normalfont\scshape\bfseries\textcolor{turonblue}{ORQ}}%
+}
