@@ -1,5 +1,5 @@
 \section{Methodology}
-\label{sec:methodology}
+\label{sec-ch2:methodology}
 This work seeks to investigate smart building research to understand what researchers envision and design for. The goal is not to provide an exhaustive summary of existing research findings but to focus on identifying the human experiences that research in this domain aims to improve or introduce. In addition, we identified \emph{how} the field aims to shape those human experiences through design mechanisms and technological interventions. This was accomplished by conducting a scoping review based on the five-stage framework outlined by \citet{arksey2005scoping}. We chose a scoping review as this method suits broad research questions that map key characteristics rather than a targeted study of a specific effect \cite{munn2018systematic, rogers2024umbrella}. The review was planned with pre-defined research questions and a search strategy, rather than following a formal protocol, allowing the specifics of the analysis to be shaped by the first author's growing familiarity with the literature by reading the selected corpus papers. The process is documented in the rest of this section. 
 To ensure comprehensive reporting, this paper broadly follows the Preferred Reporting Items for Systematic Reviews and Meta-Analyses extension for Scoping Reviews (PRISMA-ScR) checklist where applicable\sidenote{As conventions in HCI do not always accommodate the PRISMA-ScR items, we provide a table in the supplementary materials to detail the manner by which we adhere to the reporting checklist.}. The flow diagram in \autoref{fig:flowdiagram} provides an overview of the search and screening stages to reach the final review corpus. 
 
@@ -24,25 +24,25 @@ The other two research questions underwent iterations but focused on the technol
 \subsection{Framework Stage 2: Identifying Relevant Studies}
 To ensure that our scoping review investigates disciplines beyond the HCI domain, we queried for works in two established databases. The ACM Digital Library (DL) primarily features computer science and engineering research (including HCI). Scopus offers multidisciplinary coverage, with frequent indexing of architecture works, making it a valuable resource for architecture studies on smart building research\sidenote{List of architecture-based sources available here when filtered by subject area: \url{https://www.scopus.com/sources.uri}}. 
 
-\subsubsection{Pilot Searches}
+\paragraph{Pilot Searches}
 We first conducted pilot searches on \textit{smart buildings} and \textit{experiences}, which resulted in some 9000 references in Scopus alone. We reviewed the first 20\%, finding many irrelevant studies that did not involve human experiences, such as Internet of Things (IoT) and civil and computational engineering. Based on this, we decided to include \textit{interaction} (\texttt{interac*}) in our search strategy to refer to interactive human experiences in smart buildings.  
 
 
 
-\subsubsection{Employed Search Queries}
+\paragraph{Employed Search Queries}
 Our search queries are explained in \autoref{fig:queries}. The search involved seven queries (Query~1--Query~7), structured around three keyword categories: 1) environment/domain-specific descriptors, 2) experience, and 3) interaction keywords. We conducted the searches using a combination of the keyword groups. A combination with ``built environment'' was searched separately due to the large volume of results, while more specific environmental descriptors---(b) in \autoref{fig:queries}---were combined in a second search. Domain-specific descriptors were handled individually, and when these already included interaction (e.g. ``human-building interaction''), only experience keywords were added. An example of a search query (applied to Scopus) is: \texttt{"built environment*" AND experien* AND interac*}.  The complete list of queries we used are included in the supplementary materials. 
 
 We conducted the searches based on papers' keywords, abstract, and title across both databases\sidenoteup{34pt}{Scopus supports a combined search of titles, abstracts, and keywords. In contrast, the ACM DL requires these parameters to be searched separately. To ensure consistency and comparability, we conducted separate searches within the ACM DL: first by titles, then by abstracts, and finally by keywords, before collating the results.}. This generated \textbf{5,526 references} across both sources, collected during April -- May 2024 (later increased by 22 papers through snowballing \cite{badampudi2015experiences}, see \autoref{fig:flowdiagram}).
 
 
-\begin{widefigure}[!b]
-    \includesvg[width=0.92\linewidth]{images/methodology/methodology-search.svg}
+\begin{widefigure}[tbp]
+    \includesvg[width=\linewidth]{images/methodology/methodology-search.svg}
     \caption{The search comprised seven queries (Query 1 -- Query 7), combining nine components (see (a)--(i)). The nine components consisted of either 1) environment/domain-specific descriptors (first column), 2) a keyword for experience (second column), or 3) a keyword for interaction (third column). We conducted the searches using combinations of these---query list on the right. Thus, environmental descriptors were combined with experience and interaction keywords (red line). This was implemented for "Built environment" separately---(a) in red box---as this yielded many results, while more specific terms were combined in a second search---(b) in red box. Domain-specific descriptors were handled separately again---(c) and (d) in green box; green line. When the domain-specific descriptor already included the word interaction (e.g. 'human-building interaction'), the query was only accompanied by the experience keyword---(e), (f), and (g) in blue box.}
     \label{fig:queries}
 \end{widefigure}
 
 \subsection{Framework Stage 3: Study Selection} 
-\label{sec:iecrit}
+\label{sec-ch2:iecrit}
 During our pilot search, we developed initial inclusion-exclusion (I/E) criteria for the first (title and abstract) screening stage, refining them as we grew familiar with the literature. Broadly, references were included if they: (1) were set within the context of a smart building, (2) discussed human experiences, and (3) explored the use or potential use of technologies. References solely focused on engineering, algorithms, or building design without addressing human interaction or the use of technology were excluded. In addition, we excluded papers that were not in English and secondary research (e.g. meta-reviews). The first author applied the I/E criteria to the 5,548 citations, reading all associated abstracts, keywords, and titles. If the relevance of a study was unclear from the abstract, the study was retained for a full article review. This process resulted in 368 shortlisted abstracts. After a review by the last author and the removal of duplicate studies, 338 abstracts were shortlisted for full-paper screening. For the latter, the criteria established for inclusion and exclusion were specified and expanded:
 
 \begin{enumerate}

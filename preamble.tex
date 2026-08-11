@@ -176,6 +176,7 @@
 \usepackage{tikz}
 \usepackage{xparse}
 \usetikzlibrary{
+  arrows.meta,
   shapes,
   arrows,
   positioning,
@@ -202,21 +203,17 @@
 % Front-matter lists can breathe slightly into the fixed right margin.
 % This does not mirror page geometry or affect the main text column.
 \newenvironment{tocwide}{%
-  \begin{adjustwidth}{0pt}{-14mm}%
+  \begin{adjustwidth}{0pt}{-22mm}%
 }{%
   \end{adjustwidth}%
 }
 
 % Turon-like accent colours: muted blue for major structural titles;
 % restrained wine/magenta for page numbers, sidenote marks, links, and refs.
-% \definecolor{turonblue}{HTML}{005080}
-% \definecolor{turonmagenta}{HTML}{8B1E5A}
-% \definecolor{turongray}{HTML}{555555}
-% \definecolor{turonlightgray}{HTML}{777777}
 
 
 \definecolor{turonblue}{HTML}{005080}
-\definecolor{turonmagenta}{HTML}{9A005D}
+\definecolor{turonmagenta}{HTML}{8B1E5A}
 \definecolor{turongray}{HTML}{555555}
 \definecolor{turonlightgray}{HTML}{777777}
 % Baseline-based spacing for the chapter-opening grid and heading hierarchy.
@@ -269,6 +266,9 @@
 
 \addbibresource{references.bib}
 \addbibresource{papers/01-scoping-review/scoping-review.bib}
+\addbibresource{papers/02-afi/afi.bib}
+\addbibresource{papers/03-multisensory-biophilic/multisensory.bib}
+\addbibresource{papers/04-bidf/bidf.bib}
 
 % Slightly richer, darker book texture without making the page loose.
 \linespread{.96}
@@ -333,52 +333,127 @@
   {\normalfont\Large\itshape\color{black!86}}
 \titlespacing*{name=\chapter,numberless}{0pt}{1.3em}{1.6em}
 
-% Section headings follow the same baseline rhythm as the chapter opening.
-% They are body-size navigation marks, differentiated by small caps, tracking,
-% and slightly stronger weight rather than by larger display scale.
-% \titleformat{\section}
-%   {\normalfont\normalsize\scshape\bfseries\lsstyle\raggedright\color{black}}
-%   {\thesection}{0.75em}{}
-% \titlespacing*{\section}{0pt}{\sectionBefore}{\sectionAfter}
 
-% \titleformat{\subsection}
-%   {\normalfont\normalsize\scshape\bfseries\lsstyle\raggedright\color{black}}
-%   {\thesubsection}{0.7em}{}
-% \titlespacing*{\subsection}{0pt}{\subsectionBefore}{\subsectionAfter}
+\newcommand{\designbox}[3]{%
+\begin{figure}[!htbp]
+\centering
+\fbox{%
+\begin{minipage}{0.95\linewidth}
+\textbf{#1}
+
+\vspace{4pt}
+#2
+\end{minipage}}
+\Description{#3}
+\end{figure}
+}
+
+
+
+
+% ---------- Publication list ----------
+\newenvironment{publicationlist}{%
+  \begingroup
+  \fontsize{9.3}{10.8}\selectfont
+  \RaggedRight
+  \setlength{\parindent}{0pt}
+  \setlength{\parskip}{.48\baselineskip}
+}{%
+  \par
+  \endgroup
+}
+
+\newcommand{\pubentry}[1]{%
+  \par\noindent
+  \hangindent=1.15em
+  \hangafter=1
+  #1\par
+}
+
+\newcommand{\pubaward}[1]{%
+  \nobreak\hspace{.28em}%
+  {\scriptsize\textcolor{turonblue}{\faAward}}%
+  \hspace{.15em}%
+  {\scriptsize\itshape #1}%
+}
 
 % ---------- Section heading style ----------
-% Main section headings: compact, tracked, uppercase small-caps.
-% Slightly quieter than the chapter-opening title.
+\setcounter{secnumdepth}{2}
 
 \newcommand{\turonsectiontitle}[1]{%
-  \textls[35]{\MakeTextUppercase{#1}}%
+  \textls[22]{\MakeTextUppercase{#1}}%
 }
 
 \newcommand{\turonsubsectiontitle}[1]{%
-  \textls[25]{#1}%
+  \textit{#1}%
 }
 
+% Sections: body-size, uppercase small caps.
 \titleformat{\section}
-  {\normalfont\small\scshape\bfseries\raggedright\color{black}}
-  {\thesection}
+  {\normalfont\normalsize\scshape\raggedright\color{black}}
+  {\normalfont\small\upshape\thesection}
   {1.0em}
   {\turonsectiontitle}
 
 \titlespacing*{\section}
   {0pt}
-  {1.75\baselineskip}
+  {1.85\baselineskip}
   {1.05\baselineskip}
 
+% Subsections: numbered, italic, quiet.
+% This is the deepest formal heading level in the dissertation body.
 \titleformat{\subsection}
-  {\normalfont\small\scshape\bfseries\raggedright\color{black}}
-  {\thesubsection}
+  {\normalfont\normalsize\itshape\raggedright\color{black}}
+  {\normalfont\small\upshape\thesubsection}
   {.85em}
   {\turonsubsectiontitle}
 
 \titlespacing*{\subsection}
   {0pt}
-  {1.35\baselineskip}
+  {1.45\baselineskip}
   {.75\baselineskip}
+
+% Subsubsections: available, but unnumbered and rarely used.
+% Prefer \paragraph for local labelled blocks.
+\titleformat{\subsubsection}[hang]
+  {\normalfont\normalsize\itshape\raggedright\color{black}}
+  {}
+  {0pt}
+  {}
+
+\titlespacing*{\subsubsection}
+  {0pt}
+  {1.20\baselineskip}
+  {.55\baselineskip}
+
+% Paragraph-level minor heading with Turon-like grey arrow.
+% Use for steps, themes, practices, opportunities, values, and local analytic moves.
+
+% ---------- Turon-like flat arrow ----------
+\newcommand{\turonarrow}{%
+  \tikz[baseline=-0.48ex]{%
+    \fill[black!35]
+      (0,0) --
+      (0.95ex,0.50ex) --
+      (0,1.00ex) --
+      cycle;
+  }%
+}
+\titleformat{\paragraph}[hang]
+  {\normalfont\normalsize\scshape\raggedright\color{black}}
+  {}
+  {0pt}
+  {\turonarrow\hspace{.65em}}
+
+\titlespacing*{\paragraph}
+  {0pt}
+  {1.05\baselineskip}
+  {.45\baselineskip}
+
+\titlespacing*{\paragraph}
+  {0pt}
+  {1.05\baselineskip}
+  {.45\baselineskip}
   
 % Part pages: quiet "Part I" plus blue small-caps/all-caps title, centered mid-page.
 \newcommand{\turonparttitle}[1]{\textls[55]{\MakeTextUppercase{#1}}}
@@ -419,32 +494,7 @@
   \par\endgroup\addvspace{0pt}%
 }
 
-% % ---------- Synopsis block ----------
-% \newenvironment{synopsis}{%
-%   \par\addvspace{0pt}%
-%   \begingroup
-%   \fontsize{10.5}{12.4}\selectfont
-%   \color{black}%
-%   \noindent
-%   \llap{\raisebox{.01em}{\scriptsize\color{turonblue!55!black}\synopsismarker}\hspace{.7em}}%
-%   {\normalfont\scshape\textls[45]{Synopsis}}\quad
-%   \ignorespaces
-% }{%
-%   \par\endgroup\addvspace{0pt}%
-% }
-% Turon-like opening paragraph: a small hanging marker plus a moderated small-caps lead phrase.
-% \newcommand{\openingpara}[2]{%
-%   \par\addvspace{0pt}%
-%   \noindent\llap{\raisebox{.01em}{\scriptsize\color{turonblue!55!black}\synopsismarker}\hspace{.7em}}%
-%   {\scshape\textls[4]{#1}} #2\par\addvspace{0pt}%
-% }
 
-% Turon-like opening paragraph: marker + uppercase/small-caps lead phrase.
-% \newcommand{\openingpara}[2]{%
-%   \par\addvspace{0pt}%
-%   \noindent\llap{\raisebox{.01em}{\scriptsize\color{turonblue!55!black}\synopsismarker}\hspace{.7em}}%
-%   {\scshape\textls[8]{\MakeTextUppercase{#1}}} #2\par\addvspace{0pt}%
-% }
 % ---------- Turon-style small-caps lead-ins ----------
 % The inspiration uses small caps, not bold all-caps.
 % Keep the source text lowercase/titlecase; this macro renders it as small caps.
@@ -584,11 +634,6 @@
   \end{minipage}\end{lrbox}\marginnote{\usebox{\marginfigurebox}}[0pt]%
 }
 
-% \newenvironment{fullwidth}{%
-%   \begin{adjustwidth}{0pt}{-55mm}
-% }{%
-%   \end{adjustwidth}
-% }
 
 % ---------- Figure and table width system ----------
 % Wide material spans the main text column + fixed right-margin note column.
@@ -687,18 +732,6 @@
 \setlist[itemize]{leftmargin=1.2em,itemsep=.15em,topsep=.35em,parsep=0pt,partopsep=0pt,label={\color{turonblue}$\bullet$}}
 \setlist[enumerate]{leftmargin=1.45em,itemsep=.15em,topsep=.35em,parsep=0pt,partopsep=0pt}
 
-% % Captions and list entries: compact, book-like captions rather than default bold labels.
-% % The label is distinguished quietly; the caption remains a prose note.
-% \DeclareCaptionLabelSeparator{turoncaption}{.\enspace}
-% \DeclareCaptionFormat{turoncaptionformat}{%
-%   \footnotesize\hangindent=1.8em\hangafter=1 #1#2#3\par}
-% \captionsetup{font={footnotesize},labelfont={sc,color=turonblue},textfont=normalfont,format=turoncaptionformat,justification=raggedright,singlelinecheck=false,labelsep=turoncaption,aboveskip=.55\baselineskip,belowskip=.25\baselineskip}
-% \captionsetup[figure]{name=Figure}
-% \captionsetup[table]{name=Table}
-
-% Captions and list entries: compact, book-like captions.
-% Uses real hanging captions so wrapped lines align after "Figure 2.2."
-
 
 % ---------- Captions ----------
 % Turon/Tufte-like captions: a small left label column and prose caption to the right.
@@ -727,13 +760,13 @@
   labelsep=none,
   justification=RaggedRight,
   singlelinecheck=false,
-  font={footnotesize},
+  font={scriptsize},
   labelfont={normalfont},
   textfont={normalfont},
   margin=0pt,
   indention=0pt,
   aboveskip=.55\baselineskip,
-  belowskip=.25\baselineskip
+  belowskip=.55\baselineskip
 }
 
 \captionsetup[figure]{name=Figure}
@@ -771,18 +804,17 @@
   \emergencystretch=4.0em%
   \relax
 }
-
 % Parts: blue, spaced, small caps.
 \renewcommand{\cftpartfont}{%
-  \tocnohyphen\normalfont\small\scshape\bfseries\color{turonblue}%
+  \tocnohyphen\normalfont\small\scshape\bfseries\lsstyle\color{turonblue}%
 }
 \renewcommand{\cftpartpagefont}{%
   \normalfont\small\bfseries\color{turonmagenta}%
 }
 
-% Chapters: compact small caps, like the reference.
+% Chapters: tracked small caps, clear but not oversized.
 \renewcommand{\cftchapfont}{%
-  \tocnohyphen\normalfont\small\scshape\bfseries\color{black}%
+  \tocnohyphen\normalfont\small\scshape\bfseries\lsstyle\color{black}%
 }
 \renewcommand{\cftchappagefont}{%
   \normalfont\small\bfseries\color{turonmagenta}%
@@ -796,7 +828,7 @@
   \normalfont\small\color{turonmagenta}%
 }
 
-% Subsections: available if tocdepth is later changed back to 2.
+% Subsections: available if tocdepth is later changed to 2.
 \renewcommand{\cftsubsecfont}{%
   \tocnohyphen\normalfont\footnotesize\color{black}%
 }
@@ -804,16 +836,16 @@
   \normalfont\footnotesize\color{turonmagenta}%
 }
 
-% Tighter dot leaders. Lower number = denser dots.
-\renewcommand{\cftdotsep}{3.8}
+% Slightly calmer dot leaders.
+\renewcommand{\cftdotsep}{4.8}
 \renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
 \renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
 \renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}}
 
-% Vertical rhythm.
-\setlength{\cftbeforepartskip}{.85em}
-\setlength{\cftbeforechapskip}{.34em}
-\setlength{\cftbeforesecskip}{.08em}
+% More air before major units.
+\setlength{\cftbeforepartskip}{1.15em}
+\setlength{\cftbeforechapskip}{.46em}
+\setlength{\cftbeforesecskip}{.09em}
 \setlength{\cftbeforesubsecskip}{.02em}
 
 % Indentation.
@@ -824,31 +856,9 @@
 
 % Number widths.
 \setlength{\cftpartnumwidth}{1.9em}
-\setlength{\cftchapnumwidth}{1.7em}
-\setlength{\cftsecnumwidth}{2.9em}
-\setlength{\cftsubsecnumwidth}{3.5em}
-
-% \newcommand{\tocnohyphen}{\hyphenpenalty=10000\exhyphenpenalty=10000\pretolerance=10000\tolerance=2200\emergencystretch=4.0em\relax}
-% \renewcommand{\cftpartfont}{\tocnohyphen\normalfont\small\color{turonblue}\scshape}
-% \renewcommand{\cftpartpagefont}{\normalfont\small\color{turonmagenta}}
-% \renewcommand{\cftchapfont}{\tocnohyphen\normalfont\small}
-% \renewcommand{\cftchappagefont}{\normalfont\small\color{turonmagenta}}
-% \renewcommand{\cftsecfont}{\tocnohyphen\normalfont\small}
-% \renewcommand{\cftsecpagefont}{\normalfont\small\color{turonmagenta}}
-% \renewcommand{\cftsubsecfont}{\tocnohyphen\normalfont\footnotesize}
-% \renewcommand{\cftsubsecpagefont}{\normalfont\footnotesize\color{turonmagenta}}
-% % Slightly wider dot spacing keeps long entries from feeling mechanically ruled.
-% \renewcommand{\cftdotsep}{2.8}
-% \renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
-% \renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
-% \renewcommand{\cftsubsecleader}{\cftdotfill{\cftdotsep}}
-% \setlength{\cftbeforepartskip}{.95em}
-% \setlength{\cftbeforechapskip}{.48em}
-% \setlength{\cftbeforesecskip}{.16em}
-% \setlength{\cftpartindent}{0pt}
-% \setlength{\cftchapindent}{1.2em}
-% \setlength{\cftsecindent}{3.0em}
-% \setlength{\cftsubsecindent}{4.7em}
+\setlength{\cftchapnumwidth}{2.0em}
+\setlength{\cftsecnumwidth}{3.0em}
+\setlength{\cftsubsecnumwidth}{3.7em}
 
 % Figure/table lists: Turon-like prefix and magenta page numbers.
 \renewcommand{\cftfigpresnum}{Figure~}
